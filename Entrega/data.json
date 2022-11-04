@@ -1,0 +1,74 @@
+[
+    {
+       "id":1,
+       "nombre":"hamburguesa simple",
+       "valor":500,
+       "tipo":"comida"
+    },
+    {
+       "id":2,
+       "nombre":"hamburguesa doble",
+       "valor":700,
+       "tipo":"comida"
+    },
+    {
+       "id":3,
+       "nombre":"papas fritas",
+       "valor":300,
+       "tipo":"comida"
+    },
+    {
+       "id":4,
+       "nombre":"pizza muzzarella",
+       "valor":750,
+       "tipo":"comida"
+    },
+    {
+       "id":5,
+       "nombre":"pizza especial",
+       "valor":900,
+       "tipo":"comida"
+    },
+    {
+       "id":6,
+       "nombre":"pizza bomba",
+       "valor":1100,
+       "tipo":"comida"
+    },
+    {
+       "id":7,
+       "nombre":"empanada unidad",
+       "valor":200,
+       "tipo":"comida"
+    },
+    {
+       "id":8,
+       "nombre":"empanada docena",
+       "valor":1700,
+       "tipo":"comida"
+    },
+    {
+       "id":9,
+       "nombre":"sanguche lomito",
+       "valor":650,
+       "tipo":"comida"
+    },
+    {
+       "id":10,
+       "nombre":"snaguche milanesa",
+       "valor":600,
+       "tipo":"comida"
+    },
+    {
+       "id":11,
+       "nombre":"gaseosa 600ml",
+       "valor":200,
+       "tipo":"bebida"
+    },
+    {
+       "id":12,
+       "nombre":"gaseosa 1,5Lts",
+       "valor":450,
+       "tipo":"bebida"
+    }
+ ]
