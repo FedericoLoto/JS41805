@@ -1,16 +1,3 @@
-// almacen online
-/*
-1) Mostrar productos en el html de foma dinamica
-2) Agregar productos al carrito
-3) Evitar la carga de productos  repetidos de carritos 
-4) Mostrar el carrito en el HTML de forma dínamica
-5) Eliminar productos del carrito
-6) Calcular el total de la compra
-7) Vaciar el carrito
-8) Guardar el carrito en el LocalStorage*/
-
-/////////////////////////////////////////
-
 //Menú de la roticería
 class Alimento {
     constructor(id, nombre, precio, img){
@@ -34,11 +21,16 @@ const sangucheMilanesa=new Alimento(10,"sanguche milanesa",600,"img/sanguchemila
 const gaseosaCh=new Alimento(11,"gaseosa 600ml", 200,"img/gaseosa600.jpg");
 const gaseosaGr=new Alimento(12,"gaseosa 1,5Lts",300,"img/gaseosalitroymedio.jpg");
 
-const alimentos = [hamburguesa, hamburguesaDoble, papasFritas, pizza, pizzaEsp,hamburpizza, empanada, empanadaDocena, sangucheLomito, sangucheMilanesa, gaseosaCh, gaseosaGr];
+const alimentos = [hamburguesa, hamburguesaDoble, papasFritas, pizza,pizzaEsp ,hamburpizza, empanada, empanadaDocena, sangucheLomito, sangucheMilanesa, gaseosaCh, gaseosaGr];
 
 //Carrito de compras
 
 let carrito = [];
+
+//Cargar carrito desde el LocalStorage
+if(localStorage.getItem('carrito')){
+    carrito = JSON.parse(localStorage.getItem("carrito"));
+}
 
 //Mostrar el menú
 
@@ -67,19 +59,20 @@ const mostrarMenu= ()=> {
         botonM.addEventListener("click", ()=>{
             agregarAlCarrito(Alimento.id)
         })
-    
+     
     })
 }
 
 //Funcion para agregar al Carrito
 const agregarAlCarrito = (id)=>{
-    const producto = alimentos.find((Alimento) => Alimento.id === id);
+    const Alimento = alimentos.find((Alimento) => Alimento.id === id);
     const productoEnCarrito= carrito.find((Alimento) => Alimento.id === id);
-    if (productoEnCarrito){
-        productoEnCarrito.cantidad++;
-    }else{
-        carrito.push(Alimento);
-    }
+    (productoEnCarrito?productoEnCarrito.cantidad++:carrito.push(Alimento))
+
+        //Agregar al LocalS
+        localStorage.setItem('carrito',JSON.stringify(carrito));
+    obtenerTotal();
+    
 }
 
 mostrarMenu();
@@ -113,64 +106,76 @@ const mostrarCarrito= ()=>{
         const btn= document.getElementById(`eliminar${Alimento.id}`);
         btn.addEventListener("click", ()=>{
             eliminarDelCarrito(Alimento.id);
+
         })
             
     })
+    obtenerTotal();
 };
+// eliminar por producto
+const eliminarDelCarrito= (id)=>{   
+    const Alimento = carrito.find((Alimento)=> Alimento.id === id);
+    const indice = carrito.indexOf (Alimento);
+    carrito.splice(indice, 1);
+    mostrarCarrito();
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+
+}
+
+//vaciar carrito completo
+const vaciarCarrito= document.getElementById('vaciarCarrito');
+vaciarCarrito.addEventListener("click", ()=> {
+    eliminarTodoCarrito();
+})
 
 
+const eliminarTodoCarrito = () =>{
+    carrito= [];
+    mostrarCarrito();
+    localStorage.clear();
+}
 
+//Mostrar el total
+const total = document.getElementById('total');
+const obtenerTotal = () => {
+    let totalCompra = 0;    
+    carrito.forEach((Alimento)=>{
+        totalCompra += Alimento.precio * Alimento.cantidad;
+    });
+    total.innerHTML= `$${totalCompra}`;
+};
+//boton de finalizar la compra
+const finalizarCompra= document.getElementById('finalizarCompra');
+finalizarCompra.addEventListener("click", ()=>{
+    totalFinal();
+})
+function totalFinal(){
+    let fin= swal("Estas seguro de realizar la compra? Presiona OK para confirmar", {
+        buttons:["Cancelar", true],
+      });    
+        setTimeout( ()=>{
+            swal("Compra Finalizada","Muchas Gracias por su compra", "success")
+            eliminarTodoCarrito();
+            },3000); 
+        eliminarTodoCarrito();
+}
 
-
-
-
-
-
-
-
-
-
-
-
-// function Menu(id,nombre,valor,tipo){
-// this.id= id;
-// this.nombre= nombre;
-// this.valor=valor;
-// this.tipo=tipo;
-// }
-// const nuevoAlimento= new Menu(13,"postre de chocolate",500,"postre");
-// const nuevoAlimento2= new Menu(14,"gelatina",350,"postre");
-// const nuevoAlimento3= new Menu(15,"patitas de pollo",600,"comida");
-// cargarAlimento(alimentos,nuevoAlimento);
-// cargarAlimento(alimentos,nuevoAlimento2);
-// cargarAlimento(alimentos,nuevoAlimento3);
-// function cargarAlimento(arr,val){
-//     arr.push(val);
-// }
-// function filtrarAlimento(arr,fil){
-// const filtrar= arr.filter((elemento)=>{
-//     return elemento.nombre.includes(fil);
-// })
-//   return filtrar;
-// }
-// function filtrarValorMayor(arr,fil){
-// const filtrado= arr.filter((alimento)=>{
-//   return alimento.valor >= fil;
-// })
-// return filtrado;
-// } 
-// function filtrarValorMenor(arr,fil){
-//     const filtrar=arr.filter((alimento)=>{
-//       return alimento.valor <= fil;
-//     })
-//     return filtrar
-// }
-// console.log(filtrarAlimento(alimentos,prompt("Busca tu alimento")));
-// let porPrecio= prompt("Busca tu precio");
-// console.log(filtrarValorMayor(alimentos, porPrecio));
-// console.log();
-// // if ((filtrarAlimento != " ") && (filtrarValorMayor != " ")) {
-// //     console.log("En la consola estan tus filtros de alimentos");
-// // } else {
-// //     console.log("error");
-// // }
+// Lista de productos de alimentos por .json
+const tabla = document.getElementById('listaProductos')
+function cargarJson (){
+   fetch('/json/alimentos.json').then(respuesta => respuesta.json())
+   .then(user =>{
+    user.forEach(user=>{
+        const fila = document.createElement('div');
+        fila.innerHTML += `
+        <td>${user.id}</td>
+        <td>${user.nombre}</td>
+        <td>${user.valor}</td>
+        <td>${user.tipo}</td>
+        `
+        tabla.appendChild(fila);
+    })
+   })
+}
+cargarJson();
+//fin del carrito

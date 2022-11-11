@@ -4,8 +4,6 @@
     box-sizing: border-box;
 }
 
-/*Pagina Principal*/
-
 .i_body{
     background-color: #eae278;
     width: 100%;
@@ -18,8 +16,8 @@
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     border: 1px solid #584a13;
-    color: rgb(222, 202, 106);
-    background-color: #797436;
+    color: rgb(245, 245, 245);
+    background-color: #f85b50;
 }
 .listaMenu{
     width: 99%;
@@ -28,6 +26,9 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+.carro2{
+    text-align: center;
 }
 .tarjetaMn{
     width: 28%;
@@ -65,6 +66,7 @@
 .boton{
     background-color: #f46257;
     border: 1px solid #751912;
+    margin-top: 1%;
     border-radius: 5%;
     color: white;
     padding: 15px 32px;
@@ -82,7 +84,27 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
-
+.posicionbtn{
+    margin-top: 8%;
+    text-align: center;
+}
+.cajajson{
+    text-align: center;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    border: 1px solid black;
+}
+.pie{
+    padding: 0.5rem;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    background-color: #121211;
+    color: #d9d9d9;
+}
 
 
 
